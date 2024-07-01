@@ -28,7 +28,7 @@ class Loginserializer(serializers.Serializer):
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Projectdb
-        fields = ['id','project_name','description','category','amount','end_date','image']
+        fields = ['id','project_name','description','category','amount','end_date','image','inovator']
     
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -73,4 +73,4 @@ class InvestmentSerializer(serializers.ModelSerializer):
 class PaymentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Paymentmodel
-        fields = ['user','project','amount']
+        fields = ['user','project','amount','full_name','account_no','mobile_number']

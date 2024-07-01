@@ -134,8 +134,8 @@ class MyInvestments(APIView):
 
     def get(self,request,*args,**kwargs):
         user=self.request.user.id
-        data=Investeddb.objects.filter(investor_id=user)
-        serializer = InvestmentSerializer(data, many=True)
+        data=Paymentmodel.objects.filter(user_id=user)
+        serializer = PaymentSerializer(data, many=True)
         return Response(serializer.data)
     
 
@@ -158,7 +158,10 @@ class MakePayment(APIView):
         message_data = {
             'user': sender.id,
             'project': kwargs.get("pk"),
-            'amount': request.data.get('amount',request.data)
+            'amount': request.data.get('amount',request.data),
+            'full_name': request.data.get('full_name',request.data),
+            'account_no': request.data.get('account_no',request.data),
+            'mobile_number': request.data.get('mobile_number',request.data)
         }
         serializer = PaymentSerializer(data=message_data)
         if serializer.is_valid():
@@ -166,7 +169,6 @@ class MakePayment(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
         
 
 class PaymentHistory(APIView):
@@ -179,3 +181,23 @@ class PaymentHistory(APIView):
         return Response(serializer.data)
      
 
+
+
+class FirstMessageViewSet(APIView):
+    def post(self, request, *args, **kwargs):
+        id= kwargs.get("pk")
+        sender = request.user
+        data=Projectdb.objects.get(id = id)
+
+
+        message_data = {
+            'sender': sender.id,
+            'receiver':data.inovator_id,
+            'message': request.data.get('message',request.data)
+        }
+        serializer = MessageSerializer(data=message_data)
+        if serializer.is_valid():
+            message = serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

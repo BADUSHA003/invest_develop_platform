@@ -71,6 +71,9 @@ class Investeddb(models.Model):
 class Paymentmodel(models.Model):
     user = models.ForeignKey(CustomUserdb,on_delete=models.CASCADE)
     project = models.ForeignKey(Projectdb,on_delete=models.CASCADE)
+    full_name = models.CharField(max_length=100,null=True)
+    account_no =models.CharField(max_length=100,null=True)
+    mobile_number = models.PositiveBigIntegerField(null=True)
     amount = models.PositiveBigIntegerField()
     created_at = models.DateTimeField(auto_now=True)
 

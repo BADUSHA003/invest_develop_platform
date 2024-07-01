@@ -50,6 +50,7 @@ urlpatterns = [
     path("reject/notification/<int:pk>",RemoveNotification.as_view(),name="reject"),
     path("notified/list/",MessageList.as_view(),name="msg"),
     path("list/investor/<int:pk>",InvestedProjects.as_view(),name="invested"),
+    path("payed/user/list/<int:pk>",InvestedProjectsUser.as_view(),name="list_invested"),# list investors in innovaters project
     
     #investor Urls
     path("projectview/<int:pk>",ProjectView.as_view(),name="prjview_int"),
@@ -60,10 +61,12 @@ urlpatterns = [
     path("send/message/rcv/",MessageListInvestor.as_view(),name="invs_msg"),
     path("project/list/",ConfirmedProjectList.as_view(),name="pjr"),
     path("Add/Investment/<int:pk>",AddInvestment.as_view(),name="investment"),
-    path("Investment/done/",MyInvestments.as_view(),name="invest_list"),
-    path("get/updation/<int:pk>",GetUpdations.as_view(),name="list_update"),
-    path("make/payment/<int:pk>",MakePayment.as_view(),name="payment"),
-    path("transaction/history/",PaymentHistory.as_view(),name="payment_history")
+    path("Investment/done/",MyInvestments.as_view(),name="invest_list"), # list invested projects
+    path("get/updation/<int:pk>",GetUpdations.as_view(),name="list_update"),# list updation of project
+    path("make/payment/<int:pk>",MakePayment.as_view(),name="payment"),# make payment or investment
+    path("transaction/history/",PaymentHistory.as_view(),name="payment_history"),#payment history
+    path("send/investor/message/<int:pk>",FirstMessageViewSet.as_view(),name="send_msg_first"),# to send message to innovaters
+
     
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

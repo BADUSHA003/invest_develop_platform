@@ -157,9 +157,9 @@ class InvestedProjects(APIView):
 
 
 
-# class InvestedProjects(APIView):
-#      def get(self,request,*args,**kwargs):
-#          id=kwargs.get("pk")
-#          list=Investeddb.objects.filter(project_name_id=id)
-#          serializer = NotificationSerializer(list,many=True)
-#          return Response(serializer.data)
+class InvestedProjectsUser(APIView):
+     def get(self,request,*args,**kwargs):
+         id=kwargs.get("pk")
+         list=Paymentmodel.objects.filter(project_id=id)
+         serializer = PaymentSerializer(list,many=True)
+         return Response(serializer.data)
