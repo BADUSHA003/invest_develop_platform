@@ -60,7 +60,10 @@ urlpatterns = [
     path("send/message/rcv/",MessageListInvestor.as_view(),name="invs_msg"),
     path("project/list/",ConfirmedProjectList.as_view(),name="pjr"),
     path("Add/Investment/<int:pk>",AddInvestment.as_view(),name="investment"),
-    path("Investment/done/",MyInvestments.as_view(),name="invest_list")
+    path("Investment/done/",MyInvestments.as_view(),name="invest_list"),
+    path("get/updation/<int:pk>",GetUpdations.as_view(),name="list_update"),
+    path("make/payment/<int:pk>",MakePayment.as_view(),name="payment"),
+    path("transaction/history/",PaymentHistory.as_view(),name="payment_history")
     
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

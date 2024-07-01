@@ -68,14 +68,14 @@ class Investeddb(models.Model):
     project_name=models.ForeignKey(Projectdb,on_delete=models.CASCADE,null=True)
     investor=models.ForeignKey(CustomUserdb,on_delete=models.CASCADE,null=True)
 
-class Paymentdb(models.Model):
-    sender=models.ForeignKey(CustomUserdb,on_delete=models.CASCADE,null=True,related_name='send_amount')
-    receiver=models.ForeignKey(CustomUserdb,on_delete=models.CASCADE,null=True,related_name='received_amount')
-    amount_recived=models.DecimalField(max_digits=10, decimal_places=2)
-    amount_refund=models.DecimalField(max_digits=10, decimal_places=2)
-    Bool=models.BooleanField(default=False)
-    date_rec=models.DateTimeField(auto_now=True)
-    refund_date=models.DateTimeField(auto_now=True)
+class Paymentmodel(models.Model):
+    user = models.ForeignKey(CustomUserdb,on_delete=models.CASCADE)
+    project = models.ForeignKey(Projectdb,on_delete=models.CASCADE)
+    amount = models.PositiveBigIntegerField()
+    created_at = models.DateTimeField(auto_now=True)
+
+
+
 
 
 

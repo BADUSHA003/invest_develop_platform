@@ -67,3 +67,10 @@ class InvestmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Investeddb
         fields = "__all__"
+
+
+
+class PaymentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Paymentmodel
+        fields = ['user','project','amount']

@@ -112,7 +112,7 @@ class ConfirmedProjectList(APIView):
 
 class AddInvestment(APIView):
     permission_classes=[permissions.IsAuthenticated]
-
+ 
     def post(self,request,*args,**kwargs):
         user=self.request.user.id
         project = kwargs.get("pk")
@@ -137,9 +137,45 @@ class MyInvestments(APIView):
         data=Investeddb.objects.filter(investor_id=user)
         serializer = InvestmentSerializer(data, many=True)
         return Response(serializer.data)
+    
 
+
+class GetUpdations(APIView):
+    permission_classes=[permissions.IsAuthenticated]
+
+    def get(self,request,*args,**kwargs):
+        id = kwargs.get("pk")
+        data=projectupdatedb.objects.filter(project_name_id = id)
+        serializer = UpdateSerializer(data, many=True)
+        return Response(serializer.data)
      
+class MakePayment(APIView):
+    permission_classes=[permissions.IsAuthenticated]
 
+
+    def post(self, request, *args, **kwargs):
+        sender = request.user
+        message_data = {
+            'user': sender.id,
+            'project': kwargs.get("pk"),
+            'amount': request.data.get('amount',request.data)
+        }
+        serializer = PaymentSerializer(data=message_data)
+        if serializer.is_valid():
+            message = serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
         
+
+class PaymentHistory(APIView):
+    permission_classes=[permissions.IsAuthenticated]
+
+    def get(self,request,*args,**kwargs):
+        id = request.user
+        data=Paymentmodel.objects.filter(user_id = id)
+        serializer = PaymentSerializer(data, many=True)
+        return Response(serializer.data)
+     
 
