@@ -132,12 +132,22 @@ class AddInvestment(APIView):
 class MyInvestments(APIView):
     permission_classes=[permissions.IsAuthenticated]
 
-    def get(self,request,*args,**kwargs):
-        user=self.request.user.id
-        data=Paymentmodel.objects.filter(user_id=user)
-        serializer = PaymentSerializer(data, many=True)
-        return Response(serializer.data)
     
+    def get(self,request,*args,**kwargs):
+         user=self.request.user.id
+         data=Investeddb.objects.filter(investor_id=user)
+         c=[]
+         for i in data:
+            c.append(i.project_name_id)
+         project_list = []
+         for j in c:
+            qs = Projectdb.objects.filter(id=j)
+            for user in qs:
+                print(user.id)
+                project_list.append(user)
+         serializer = ProjectSerializer(project_list, many=True)
+         return Response(serializer.data)
+     
 
 
 class GetUpdations(APIView):
