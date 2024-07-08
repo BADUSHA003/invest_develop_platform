@@ -36,7 +36,8 @@ class ProjectApi(APIView):
     def get(self, request, *args, **kwargs):
         # Retrieve projects uploaded by the currently authenticated user
         projects = Projectdb.objects.filter(inovator_id=request.user)
-        serializer = ProjectSerializer(projects, many=True)
+        serializer = ProjectSerializer2(projects, many=True)
+        print(serializer.data)
         return Response(serializer.data)
     
     def put(self, request, *args, **kwargs):
