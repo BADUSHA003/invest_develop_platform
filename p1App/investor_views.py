@@ -182,14 +182,23 @@ class MakePayment(APIView):
         
 
 class PaymentHistory(APIView):
-    permission_classes=[permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
-    def get(self,request,*args,**kwargs):
-        id = request.user
-        data=Paymentmodel.objects.filter(user_id = id)
-        serializer = PaymentSerializer(data, many=True)
-        return Response(serializer.data)
-     
+    def get(self, request, *args, **kwargs):
+        user_id = request.user.id
+        payment_data = Paymentmodel.objects.filter(user_id=user_id)
+        
+        response_data = []
+        
+        for payment in payment_data:
+            project = payment.project
+            payment_details = PaymentSerializer(payment).data
+            project_details = ProjectSerializer(project).data
+            
+            combined_details = {**payment_details, **project_details}
+            response_data.append(combined_details)
+        
+        return Response(response_data)
 
 
 
