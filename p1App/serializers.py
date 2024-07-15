@@ -10,7 +10,7 @@ class RegSerializer(serializers.ModelSerializer):
 class RegSerializer1(serializers.ModelSerializer):
     class Meta:
         model=CustomUserdb
-        fields=['id','username','full_name','email','mobile','password']
+        fields=['id','username','full_name','email','mobile']
 
 
 class Loginserializer(serializers.Serializer):

@@ -51,6 +51,8 @@ urlpatterns = [
     path("notified/list/",MessageList.as_view(),name="msg"),
     path("list/investor/<int:pk>",InvestedProjects.as_view(),name="invested"),
     path("payed/user/list/<int:pk>",InvestedProjectsUser.as_view(),name="list_invested"),# list investors in innovaters project
+    path("total/investors/",TotalInvestors.as_view(),name="total_invsetors"),# list totla inovaters
+    path("individual/investors/<int:pk>",IndividualInvestors.as_view(),name="int_user"),# list individual inovaters
     
     #investor Urls
     path("projectview/<int:pk>",ProjectView.as_view(),name="prjview_int"),

@@ -164,3 +164,22 @@ class InvestedProjectsUser(APIView):
          list=Paymentmodel.objects.filter(project_id=id)
          serializer = PaymentSerializer(list,many=True)
          return Response(serializer.data)
+     
+
+
+
+
+class TotalInvestors(APIView):
+    def get(self,request,*args,**kwargs):
+         list=CustomUserdb.objects.filter(is_investor = True)
+         serializer = RegSerializer1(list,many=True)
+         return Response(serializer.data)
+    
+class IndividualInvestors(APIView):
+    def get(self,request,*args,**kwargs):
+         id = kwargs.get("pk")
+         list=CustomUserdb.objects.filter(id = id)
+         serializer = RegSerializer1(list,many=True)
+         return Response(serializer.data)
+     
+     
