@@ -7,6 +7,11 @@ class RegSerializer(serializers.ModelSerializer):
         model=CustomUserdb
         fields=['username','full_name','email','mobile','password']
 
+class RegSerializer1(serializers.ModelSerializer):
+    class Meta:
+        model=CustomUserdb
+        fields=['id','username','full_name','email','mobile','password']
+
 
 class Loginserializer(serializers.Serializer):
     username=serializers.CharField()

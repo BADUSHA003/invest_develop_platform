@@ -133,7 +133,7 @@ class MessageList(APIView):
             for user in qs:
                 print(user.id)
                 user_list.append(user)
-         serializer = RegSerializer(user_list, many=True)
+         serializer = RegSerializer1(user_list, many=True)
          return Response(serializer.data)
      
 
