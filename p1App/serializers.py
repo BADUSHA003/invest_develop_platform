@@ -83,4 +83,4 @@ class InvestmentSerializer(serializers.ModelSerializer):
 class PaymentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Paymentmodel
-        fields = ['user','project','amount','full_name','account_no','mobile_number']
+        fields = ['user','project','rate','full_name','account_no','mobile_number']

@@ -39,6 +39,7 @@ class Projectdb(models.Model):
     date=models.DateField(auto_now_add=True,null=True)
     end_date=models.DateField(null=True)
     image=models.ImageField(upload_to='project_files',blank=True,null=True)
+    status = models.BooleanField(default=False,null=True)
     
     # active = models.BooleanField(default=True)
 
@@ -74,7 +75,7 @@ class Paymentmodel(models.Model):
     full_name = models.CharField(max_length=100,null=True)
     account_no =models.CharField(max_length=100,null=True)
     mobile_number = models.PositiveBigIntegerField(null=True)
-    amount = models.PositiveBigIntegerField()
+    rate = models.PositiveBigIntegerField(null=True)
     created_at = models.DateTimeField(auto_now=True)
 
 

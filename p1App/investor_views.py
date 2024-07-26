@@ -16,9 +16,9 @@ class ProjectView(APIView):
         
         id = kwargs.get("pk")
         if id:
-            projects = Projectdb.objects.filter(id=id)
+            projects = Projectdb.objects.filter(id=id,status = False)
         else:
-            projects = Projectdb.objects.all()
+            projects = Projectdb.objects.filter(status = False)
         serializer = ProjectSerializer(projects, many=True)
         return Response(serializer.data)
 
@@ -121,11 +121,17 @@ class AddInvestment(APIView):
             'investor': user ,  
         }
         serializer = InvestmentSerializer(data = imvestment_data)
+        
         if serializer.is_valid():
+            Pro = Projectdb.objects.get(id=project)
+            if Pro.status == False:
+                Pro.status = True
+                Pro.save()
             serializer.save()
             return Response(data = serializer.data)
         else:
             return Response(data = serializer.errors)
+        
         
 
 
@@ -168,7 +174,7 @@ class MakePayment(APIView):
         message_data = {
             'user': sender.id,
             'project': kwargs.get("pk"),
-            'amount': request.data.get('amount',request.data),
+            'rate': request.data.get('rate',request.data),
             'full_name': request.data.get('full_name',request.data),
             'account_no': request.data.get('account_no',request.data),
             'mobile_number': request.data.get('mobile_number',request.data)
