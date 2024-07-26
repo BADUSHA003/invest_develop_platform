@@ -19,7 +19,7 @@ class ProjectView(APIView):
             projects = Projectdb.objects.filter(id=id,status = False)
         else:
             projects = Projectdb.objects.filter(status = False)
-        serializer = ProjectSerializer(projects, many=True)
+        serializer = ProjectSerializer2(projects, many=True)
         return Response(serializer.data)
 
         
@@ -111,35 +111,26 @@ class ConfirmedProjectList(APIView):
 
 
 class AddInvestment(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-
-    def post(self, request, *args, **kwargs):
-        user_id = self.request.user.id
-        project_id = kwargs.get("pk")
-
-        # Check if the investment already exists
-        if Investeddb.objects.filter(project_name=project_id, investor=user_id).exists():
-            return Response(
-                {"detail": "You have already invested in this project."},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        investment_data = {
-            'project_name': project_id,
-            'investor': user_id,
+    permission_classes=[permissions.IsAuthenticated]
+ 
+    def post(self,request,*args,**kwargs):
+        user=self.request.user.id
+        project = kwargs.get("pk")
+        imvestment_data = {
+            'project_name':project,
+            'investor': user ,  
         }
-        serializer = InvestmentSerializer(data = investment_data)
+        serializer = InvestmentSerializer(data = imvestment_data)
         
-        serializer = InvestmentSerializer(data=investment_data)
         if serializer.is_valid():
-            Pro = Projectdb.objects.get(id=project_id)
+            Pro = Projectdb.objects.get(id=project)
             if Pro.status == False:
                 Pro.status = True
                 Pro.save()
             serializer.save()
-            return Response(data=serializer.data)
+            return Response(data = serializer.data)
         else:
-            return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(data = serializer.errors)
         
         
 
@@ -208,9 +199,9 @@ class PaymentHistory(APIView):
         for payment in payment_data:
             project = payment.project
             payment_details = PaymentSerializer(payment).data
-            # project_details = ProjectSerializer(project).data
+            project_details = ProjectSerializer(project).data
             
-            combined_details = {**payment_details}
+            combined_details = {**payment_details, **project_details}
             response_data.append(combined_details)
         
         return Response(response_data)
