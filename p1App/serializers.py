@@ -74,9 +74,12 @@ class MessageSerializer(serializers.ModelSerializer):
 
 
 class InvestmentSerializer(serializers.ModelSerializer):
+    total_invested = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
+    balance_due = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
+
     class Meta:
         model = Investeddb
-        fields = "__all__"
+        fields = ['project_name', 'investor', 'amount_invested', 'total_invested', 'balance_due', 'date_invested']
 
 
 

@@ -68,6 +68,7 @@ urlpatterns = [
     path("make/payment/<int:pk>",MakePayment.as_view(),name="payment"),# make payment or investment
     path("transaction/history/",PaymentHistory.as_view(),name="payment_history"),#payment history
     path("send/investor/message/<int:pk>",FirstMessageViewSet.as_view(),name="send_msg_first"),# to send message to innovaters
+    path('investment-summary/<int:pk>/', InvestmentSummaryView.as_view(), name='investment-summary'),
 
     
 

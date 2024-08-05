@@ -12,7 +12,7 @@ class ProjectView(APIView):
 
     permission_classes=[permissions.IsAuthenticated]
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):   
         
         id = kwargs.get("pk")
         if id:
@@ -226,3 +226,35 @@ class FirstMessageViewSet(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class InvestmentSummaryView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        user_id = request.user.id
+        project_id = kwargs.get('pk')
+
+        try:
+            project = Projectdb.objects.get(id=project_id)
+        except Projectdb.DoesNotExist:
+            return Response({"error": "Project not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        # Calculate the total amount invested by the user in the specific project
+        payments = Paymentmodel.objects.filter(user_id=user_id, project_id=project_id)
+        total_invested = payments.aggregate(total=models.Sum('rate'))['total'] or 0
+
+        # Calculate the balance amount remaining
+        balance_amount = max(0, project.amount - total_invested)
+
+        # Serialize payment data if needed
+        payment_serializer = PaymentSerializer(payments, many=True)
+        project_serializer = ProjectSerializer(project)
+
+        response_data = {
+            'project': project_serializer.data,
+            'total_invested': total_invested,
+            'balance_amount': balance_amount,
+            'payments': payment_serializer.data
+        }
+
+        return Response(response_data, status=status.HTTP_200_OK)

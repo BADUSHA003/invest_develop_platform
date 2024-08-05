@@ -66,8 +66,22 @@ class Notificationdb(models.Model):
     date_time=models.DateTimeField(auto_now=True,null=True)
 
 class Investeddb(models.Model):
-    project_name=models.ForeignKey(Projectdb,on_delete=models.CASCADE,null=True)
-    investor=models.ForeignKey(CustomUserdb,on_delete=models.CASCADE,null=True)
+    project_name = models.ForeignKey(Projectdb, on_delete=models.CASCADE, null=True)
+    investor = models.ForeignKey(CustomUserdb, on_delete=models.CASCADE, null=True)
+    amount_invested = models.DecimalField(max_digits=10, decimal_places=2, default=0.00,null=True)
+    date_invested = models.DateTimeField(auto_now_add=True,null=True)
+
+    def _str_(self):
+        return f"{self.investor.full_name} invested {self.amount_invested} in {self.project_name.project_name}"
+
+    def get_total_invested(self):
+        return Investeddb.objects.filter(investor=self.investor, project_name=self.project_name).aggregate(
+            total=models.Sum('amount_invested')
+        )['total']
+
+    def get_balance_due(self):
+        total_invested = self.get_total_invested() or 0
+        return self.project_name.amount - total_invested
 
 class Paymentmodel(models.Model):
     user = models.ForeignKey(CustomUserdb,on_delete=models.CASCADE)
